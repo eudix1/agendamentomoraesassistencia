@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento Moraes Assistência Técnica</title>
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #1f1f1f;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgb(24, 24, 24);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            color: #fdbc19;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffd038;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ffbf00;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #dbac34;
+            outline: none;
+        }
+
+        button {
+            background-color: hwb(49 0% 0%);
+            color: rgb(0, 0, 0);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #fdd55e;
+        }
+
+        .error-message {
+            color: #c0392b;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+    <link rel="icon" type="image/x-icon" href="images/moraesassistenciatecnica.png">
+</head>
+<body>
+    <div class="container">
+        <img src="images/ASSISTÊNCIA TÉCNICA-Photoroom.png" alt="Logo Moraes Assistência Técnica" class="logo">
+        
+        <h1>Agende Sua Visita Técnica</h1>
+        <form id="formAgendamento" action="enviar_email.php" method="POST">
+            <div class="form-group">
+                <label for="nome">Nome Completo:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="endereco">Endereço Completo:</label>
+                <textarea id="endereco" name="endereco" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="servico">Tipo de Serviço:</label>
+                <select id="servico" name="servico" required>
+                    <option value="">Selecione...</option>
+                    <option value="Manutencao Preventiva">Manutenção Preventiva</option>
+                    <option value="Afiacao de Laminas">Afiação de Lâminas</option>
+                    <option value="Afiacao de Tesouras">Afiação de Tesouras</option>
+                    <option value="Maquina Barulhenta: Troca de Guia e Mola">Máquina Barulhenta: Troca de Guia e Mola</option>
+                    <option value="Aplicacao de Pelicula Adesiva">Aplicação de Película Adesiva</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="data">Data do Agendamento:</label>
+                <input type="date" id="data" name="data" required>
+            </div>
+
+            <div class="form-group">
+                <label for="hora">Hora do Agendamento:</label>
+                <select id="hora" name="hora" required>
+                    <option value="">Selecione...</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                </select>
+            </div>
+
+            <button type="submit">Solicitar Visita Técnica</button>
+        </form>
+        <div id="mensagem"></div>
+    </div>
+
+    <script>
+        document.getElementById('formAgendamento').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const telefone = document.getElementById('telefone').value;
+            if (!/^[0-9]{10,11}$/.test(telefone)) {
+                alert('Por favor, insira um telefone válido (DDD + número)');
+                return;
+            }
+
+            const dataSelecionada = document.getElementById('data').value;
+            const horaSelecionada = document.getElementById('hora').value;
+
+            if (!dataSelecionada || !horaSelecionada) {
+                alert('Por favor, selecione uma data e um horário.');
+                return;
+            }
+
+            // Validar se o dia é de segunda a sexta
+            const data = new Date(dataSelecionada);
+            const diaSemana = data.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+
+            if (diaSemana === 0 || diaSemana === 6) {
+                alert('Agendamentos são permitidos apenas de segunda a sexta-feira. Por favor, escolha um dia útil.');
+                return;
+            }
+
+            // Enviar o formulário
+            this.submit();
+        });
+    </script>
+</body>
+</html>
