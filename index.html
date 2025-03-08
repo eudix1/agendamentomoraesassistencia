@@ -147,24 +147,30 @@
 
     <script>
         document.getElementById('formAgendamento').addEventListener('submit', function(e) {
-            e.preventDefault();
+    e.preventDefault();
 
-            // Coletar dados do formulário
-            const formData = new FormData(this);
+    // Coletar dados do formulário
+    const formData = new FormData(this);
 
-            // Enviar dados via AJAX
-            fetch('https://agendarmoraes.kesug.com/index.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('mensagem').innerHTML = data;
-            })
-            .catch(error => {
-                document.getElementById('mensagem').innerHTML = 'Erro ao enviar o agendamento.';
-            });
-        });
+    // Enviar dados via AJAX
+    fetch('https://seudominio.epizy.com/enviar_email.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na requisição');
+        }
+        return response.text();
+    })
+    .then(data => {
+        document.getElementById('mensagem').innerHTML = data;
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        document.getElementById('mensagem').innerHTML = 'Erro ao enviar o agendamento.';
+    });
+});
     </script>
 </body>
 </html>
